@@ -3,8 +3,8 @@ import DashboardBox from '../components/dashboard-box';
 import Menu from '../components/menu';
 import { useRouter } from 'next/router';
 import React, { useContext, useState } from 'react';
-import MenuTitle from '../components/menu-title';
-import { IRootContext, RootContext } from '../context/root-context';
+import { IMenuTitleProps } from '../components/menu-title';
+import { RootContext } from '../context/root-context';
 
 const CreateModalMenuTitle: NextPage<IMenuTitleProps> = ({ title, svg }) => {
   return (
@@ -19,10 +19,9 @@ const CreateModalMenuTitle: NextPage<IMenuTitleProps> = ({ title, svg }) => {
 
 const Dashboard: NextPage = () => {
   const router = useRouter();
-  const {
-    darkMode,
-    actions: { setDarkMode },
-  } = useContext(RootContext);
+  const rootCtx = useContext(RootContext);
+  const darkMode = rootCtx?.darkMode!;
+  const setDarkMode = rootCtx?.actions.setDarkMode!;
   const [createModalShow, setCreateModalShow] = useState(false);
   return (
     <div className={darkMode ? 'dark' : ''}>

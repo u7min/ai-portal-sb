@@ -1,9 +1,9 @@
 import { NextPage } from 'next';
-import React from 'react';
+import React, { ReactElement, ReactNode } from 'react';
 
-interface IMenuTitleProps {
+export interface IMenuTitleProps {
   title: string;
-  svg?: React.SVGProps<SVGSVGElement>;
+  svg?: ReactElement<React.SVGProps<SVGSVGElement>>;
 }
 
 const MenuTitle: NextPage<IMenuTitleProps> = ({ title, svg }) => {

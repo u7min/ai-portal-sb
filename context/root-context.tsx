@@ -1,10 +1,10 @@
-import { createContext } from 'react';
+import { createContext, Dispatch, SetStateAction } from 'react';
 
 export interface IRootContext {
   darkMode: boolean;
   actions: {
-    setDarkMode: () => {};
+    setDarkMode: Dispatch<SetStateAction<boolean>>;
   };
 }
 
-export const RootContext = createContext<IRootContext>();
+export const RootContext = createContext<IRootContext | undefined>(undefined);

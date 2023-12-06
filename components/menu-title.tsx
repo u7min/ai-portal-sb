@@ -10,7 +10,7 @@ const MenuTitle: NextPage<IMenuTitleProps> = ({ title, svg }) => {
   return (
     <div className="dark:hover:text-white hover:font-semibold cursor-pointer">
       <div className="inline-flex space-x-1.5">
-        {svg}
+        {svg ? svg : <></>}
         <span>{title}</span>
       </div>
     </div>

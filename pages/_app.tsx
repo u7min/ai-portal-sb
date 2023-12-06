@@ -1,6 +1,15 @@
-import '@/styles/globals.css'
-import type { AppProps } from 'next/app'
+import '../styles/globals.css';
+import type { AppProps } from 'next/app';
+import { createContext, useState } from 'react';
+import { RootContext } from '../context/root-context';
 
-export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+function MyApp({ Component, pageProps }: AppProps) {
+  const [darkMode, setDarkMode] = useState(true);
+  return (
+    <RootContext.Provider value={{ darkMode, actions: { setDarkMode } }}>
+      <Component {...pageProps} />{' '}
+    </RootContext.Provider>
+  );
 }
+
+export default MyApp;

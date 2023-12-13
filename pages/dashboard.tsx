@@ -87,7 +87,7 @@ const Dashboard: NextPage = () => {
           <Menu />
           <div className="divide-y w-full md:w-4/5 divide-gray-500">
             <div className="h-24 flex flex-col space-y-1 justify-center">
-              <div className="h-10 px-3 text-2xl">All Workspaces</div>
+              <div className="h-10 px-3 text-2xl">All Workspaces.</div>
               <div className="px-3 text-sm dark:text-gray-400">
                 워크스페이스를 생성하시려면 새 워크스페이스를 선택해 주세요.
               </div>

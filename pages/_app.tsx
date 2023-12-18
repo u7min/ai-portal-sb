@@ -7,7 +7,9 @@ function MyApp({ Component, pageProps }: AppProps) {
   const [darkMode, setDarkMode] = useState(true);
   return (
     <RootContext.Provider value={{ darkMode, actions: { setDarkMode } }}>
-      <Component {...pageProps} />{' '}
+      <div className="text-gray-700">
+        <Component {...pageProps} />{' '}
+      </div>
     </RootContext.Provider>
   );
 }

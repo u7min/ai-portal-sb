@@ -7,9 +7,11 @@ import SvgQuestion from '@components/svgs/svg-question';
 import SvgStarSolid from '@components/svgs/svg-star-solid';
 import SvgDirectionDown from '@components/svgs/svg-direction-down';
 import SvgDirectionRight from '@components/svgs/svg-direction-right';
-import SvgCube from '@components/svgs/svg-cube';
 import { useRouter } from 'next/router';
 import { cls } from '@libs/client/utils';
+import SvgLanguage from '@components/svgs/svg-language';
+import SvgSpeak from '@components/svgs/svg-speak';
+import { ETemplateType, sampleWorkspaces } from '../pages/api/sample';
 
 interface LayoutProps {
   hasLeftMenu?: boolean;
@@ -18,17 +20,16 @@ interface LayoutProps {
 
 const Layout = ({ hasLeftMenu, children }: LayoutProps) => {
   const [collapseWorkspaces, setCollapseWorkspaces] = useState(true);
-
   const router = useRouter();
   return (
     <div className="h-screen w-full">
       <div className="bg-black h-20 flex flex-row justify-between">
-        <div className="flex h-full flex-row items-center px-3 space-x-6">
+        <div className="flex h-full flex-row items-center px-5 space-x-6">
           <Image
             src={logo}
             className="cursor-pointer rounded-lg"
-            width={50}
-            height={50}
+            width={45}
+            height={45}
             alt="Home"
           />
           <div className="text-gray-200 flex flex-row items-center space-x-1">
@@ -43,7 +44,7 @@ const Layout = ({ hasLeftMenu, children }: LayoutProps) => {
             </div>
           </div>
         </div>
-        <div className="flex flex-row h-full items-center space-x-3 text-gray-400 px-3">
+        <div className="flex flex-row h-full items-center space-x-3 text-gray-400 px-5">
           <div>Theme: Light</div>
           <div>Administration</div>
           <div>
@@ -63,7 +64,7 @@ const Layout = ({ hasLeftMenu, children }: LayoutProps) => {
       </div>
       <div className="flex flex-row h-full">
         {hasLeftMenu ? (
-          <div className="w-1/5 border-r py-5 flex flex-col items-start min-w-fit space-y-4 hidden sm:block">
+          <div className="w-1/5 border-r py-5 flex flex-col items-start min-w-fit space-y-4 hidden sm:block bg-gray-100">
             <div className="relative px-5">
               <div className="absolute left-5 pointer-events-none pl-2 pt-1.5">
                 <svg
@@ -102,10 +103,19 @@ const Layout = ({ hasLeftMenu, children }: LayoutProps) => {
               </div>
               {collapseWorkspaces ? (
                 <div>
-                  <div className="flex flex-row space-x-1 h-7 px-5 items-center hover:bg-blue-200 w-full cursor-pointer">
-                    <SvgCube className="w-5 h-5 text-yellow-600" />
-                    <span onClick={() => router.push('/workspaces/3')}>test-ai-workspace</span>
-                  </div>
+                  {sampleWorkspaces.map((w) => (
+                    <div
+                      key={w.id}
+                      className="flex flex-row space-x-1 h-7 px-5 items-center hover:bg-blue-200 w-full cursor-pointer"
+                    >
+                      {w.template.type === ETemplateType.VOICE ? (
+                        <SvgSpeak className="w-5 h-5 text-purple-500" />
+                      ) : (
+                        <SvgLanguage className="w-5 h-5 text-blue-500" />
+                      )}
+                      <span onClick={() => router.push(`/workspaces/${w.id}`)}>{w.name}</span>
+                    </div>
+                  ))}
                 </div>
               ) : (
                 <div></div>

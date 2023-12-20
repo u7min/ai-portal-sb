@@ -1,30 +1,27 @@
 import { NextPage } from 'next';
 import Layout from '@components/layout';
-import SvgMusic from '@components/svgs/svg-music';
 import { useState } from 'react';
 import { cls } from '@libs/client/utils';
 import SvgLanguage from '@components/svgs/svg-language';
 import { useRouter } from 'next/router';
+import SvgSpeak from '@components/svgs/svg-speak';
+import { ETemplateType, ITemplate } from '../api/sample';
 
 const Create: NextPage = () => {
   const [selectedTemplate, setSelectedTemplate] = useState(0);
   const router = useRouter();
-  const templates = [
+  const templates: ITemplate[] = [
     {
-      name: 'TTS',
-      applicationType: 'Voice AI',
+      id: 1,
+      name: 'Voice AI',
+      type: ETemplateType.VOICE,
       description: 'You can get a voice file by entering text.',
-      tags: ['TTS', 'Voice'],
+      tags: ['TTS', 'VC'],
     },
     {
-      name: 'VC',
-      applicationType: 'Voice AI',
-      description: 'You can input multiple voice files and synthesize them into one voice.',
-      tags: ['VC', 'Voice'],
-    },
-    {
-      name: 'Translate',
-      applicationType: 'Mamt',
+      id: 2,
+      name: 'Translation',
+      type: ETemplateType.TRANSLATION,
       description: 'Translation is performed using Google or GPT by applying the game glossary.',
       tags: ['Translate', 'LLM'],
     },
@@ -37,7 +34,7 @@ const Create: NextPage = () => {
           {templates.map((t, index) => {
             return (
               <div
-                key={index}
+                key={t.id}
                 className={cls(
                   'border hover:bg-gray-200 cursor-pointer border-gray-300',
                   selectedTemplate === index ? 'bg-gray-200' : 'bg-white',
@@ -45,23 +42,22 @@ const Create: NextPage = () => {
                 onClick={() => setSelectedTemplate(index)}
               >
                 <div className="p-4 flex flex-col space-y-1">
-                  {t.applicationType === 'Voice AI' ? (
-                    <div className="rounded-full bg-purple-500 w-7 h-7">
-                      <SvgMusic className="w-6 h-6 text-white" />
+                  {t.type === ETemplateType.VOICE ? (
+                    <div className="rounded-full bg-purple-500 w-6 h-6">
+                      <SvgSpeak className="w-6 h-6 text-white" />
                     </div>
                   ) : (
-                    <div className="rounded-full bg-blue-500 w-7 h-7">
+                    <div className="rounded-full bg-blue-500 w-6 h-6">
                       <SvgLanguage className="w-6 h-6 text-white" />
                     </div>
                   )}
 
                   <div className="flex flex-row space-x-2 items-center">
                     <h2 className="text-xl font-semibold">{t.name}</h2>
-                    <h3 className="text-sm text-gray-400">{t.applicationType}</h3>
                   </div>
                   <div className="text-xs text-gray-400">{t.description}</div>
                   <div className="text-xs text-gray-400">
-                    {t.tags.map((t) => `#${t}`).join(', ')}
+                    {t.tags?.map((t) => `#${t}`).join(', ')}
                   </div>
                 </div>
               </div>

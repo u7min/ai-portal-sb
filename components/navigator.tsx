@@ -7,7 +7,7 @@ import { Fragment } from 'react';
 
 interface NavigatorProps {
   paths: {
-    path: string;
+    path?: string;
     text?: string;
     type?: ETemplateType;
   }[];
@@ -15,12 +15,12 @@ interface NavigatorProps {
 const Navigator: NextPage<NavigatorProps> = ({ paths }) => {
   const router = useRouter();
   return (
-    <div className="text-gray-500 flex flex-row items-center space-x-1">
+    <div className="text-gray-500 flex flex-row items-center space-x-1 tracking-tighter text-sm">
       {paths?.map((path, index) => (
         <Fragment key={index}>
           <div
-            className="cursor-pointer hover:underline flex flex-row items-center space-x-1"
-            onClick={() => router.push(path.path)}
+            className="cursor-pointer hover:underline flex flex-row items-center space-x-1 whitespace-nowrap"
+            onClick={() => (path.path ? router.push(path.path) : {})}
           >
             {path.type === ETemplateType.TRANSLATION ? (
               <SvgLanguage className="w-4 h-4 text-blue-500" />

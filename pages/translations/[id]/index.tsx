@@ -1,20 +1,19 @@
 import { NextPage } from 'next';
 import Layout from '@components/layout';
 import SvgLanguage from '@components/svgs/svg-language';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { cls } from '@libs/client/utils';
 import SvgCanceled from '@components/svgs/svg-canceled';
 import SvgFailed from '@components/svgs/svg-failed';
 import SvgSuccess from '@components/svgs/svg-success';
 import SvgLoading from '@components/svgs/svg-loading';
 import { useRouter } from 'next/router';
-import { IWorkspace, sampleTranslationTasks, sampleWorkspaces } from '../../api/sample';
+import { ETranslationTaskStatus, sampleTranslationTasks } from '../../api/sample';
 import Navigator from '@components/navigator';
 import { RootContext } from '../../../context/root-context';
 import { TranslationTaskStatus } from '@components/status';
 
 type TabType = 'tasks';
-type StatusType = 'all' | 'loading' | 'success' | 'failed' | 'canceled';
 
 const Index: NextPage = () => {
   const router = useRouter();
@@ -22,7 +21,7 @@ const Index: NextPage = () => {
   const workspace = ctx?.workspace;
   const { id } = router.query;
   const [tab, setTab] = useState<TabType>('tasks');
-  const [status, setStatus] = useState<StatusType>('all');
+  const [status, setStatus] = useState<ETranslationTaskStatus | 'ALL'>('ALL');
 
   const TabItem = ({ currentTab, title }: { currentTab: TabType; title: string }) => {
     return (
@@ -50,6 +49,7 @@ const Index: NextPage = () => {
                 text: workspace?.name,
                 type: workspace?.template.type,
               },
+              { text: 'Tasks' },
             ]}
           />
           <div className="flex flex-row items-center space-x-2">
@@ -76,45 +76,53 @@ const Index: NextPage = () => {
               className={cls(
                 'cursor-pointer w-16 text-center rounded h-7 p-1',
                 'text-sm hover:border hover:border-blue-500',
-                status === 'all' ? 'border border-blue-500 bg-blue-100' : '',
+                status === 'ALL' ? 'border border-blue-500 bg-blue-100' : '',
               )}
-              onClick={() => setStatus('all')}
+              onClick={() => setStatus('ALL')}
             >
               All
             </div>
-            <div onClick={() => setStatus('loading')}>
+            <div onClick={() => setStatus(ETranslationTaskStatus.LOADING)}>
               <SvgLoading
                 className={cls(
                   'cursor-pointer w-16 text-center rounded h-7 p-1',
                   'hover:text-gray-500 hover:border hover:border-blue-500',
-                  status === 'loading' ? 'border border-blue-500 bg-blue-100 text-gray-500' : '',
+                  status === ETranslationTaskStatus.LOADING
+                    ? 'border border-blue-500 bg-blue-100 text-gray-500'
+                    : '',
                 )}
               />
             </div>
-            <div onClick={() => setStatus('success')}>
+            <div onClick={() => setStatus(ETranslationTaskStatus.SUCCESS)}>
               <SvgSuccess
                 className={cls(
                   'cursor-pointer w-16 text-center rounded h-7 p-1',
                   'hover:text-green-600 hover:border hover:border-blue-500',
-                  status === 'success' ? 'border border-blue-500 bg-blue-100 text-green-600' : '',
+                  status === ETranslationTaskStatus.SUCCESS
+                    ? 'border border-blue-500 bg-blue-100 text-green-600'
+                    : '',
                 )}
               />
             </div>
-            <div onClick={() => setStatus('failed')}>
+            <div onClick={() => setStatus(ETranslationTaskStatus.FAILED)}>
               <SvgFailed
                 className={cls(
                   'cursor-pointer w-16 text-center rounded h-7 p-1',
                   'hover:text-red-500 hover:border hover:border-blue-500',
-                  status === 'failed' ? 'border border-blue-500 bg-blue-100 text-red-500' : '',
+                  status === ETranslationTaskStatus.FAILED
+                    ? 'border border-blue-500 bg-blue-100 text-red-500'
+                    : '',
                 )}
               />
             </div>
-            <div onClick={() => setStatus('canceled')}>
+            <div onClick={() => setStatus(ETranslationTaskStatus.CANCELED)}>
               <SvgCanceled
                 className={cls(
                   'cursor-pointer w-16 text-center rounded h-7 p-1',
                   'hover:text-gray-500 hover:border hover:border-blue-500',
-                  status === 'canceled' ? 'border border-blue-500 bg-blue-100 text-gray-500' : '',
+                  status === ETranslationTaskStatus.CANCELED
+                    ? 'border border-blue-500 bg-blue-100 text-gray-500'
+                    : '',
                 )}
               />
             </div>
@@ -132,27 +140,29 @@ const Index: NextPage = () => {
               </tr>
             </thead>
             <tbody className="rounded border text-sm">
-              {sampleTranslationTasks.map((t, index) => (
-                <tr
-                  className="border-b border-gray-200 hover:border-b-0 h-16 align-top hover:bg-blue-100 cursor-pointer hover:border-l-2 hover:border-blue-500 text-gray-500"
-                  key={t.id}
-                  onClick={() => router.push(`/translations/${id}/tasks/${t.id}`)}
-                >
-                  <td className="p-2">{t.uuid}</td>
-                  <td className="p-2">
-                    <TranslationTaskStatus status={t.status} />
-                  </td>
-                  <td className="p-2">{t.game}</td>
-                  <td className="p-2">
-                    {t.sourceLan}
-                    <br />
-                    {t.targetLan.join(', ')}
-                  </td>
-                  <td className="p-2">{t.applyMethod}</td>
-                  <td className="p-2">{t.createdAt}</td>
-                  <td className="p-2">{t.duration}s</td>
-                </tr>
-              ))}
+              {sampleTranslationTasks
+                .filter((t) => t.status === status || status === 'ALL')
+                .map((t, index) => (
+                  <tr
+                    className="border-b border-gray-200 hover:border-b-0 h-16 align-top hover:bg-blue-100 cursor-pointer hover:border-l-2 hover:border-blue-500 text-gray-500"
+                    key={t.id}
+                    onClick={() => router.push(`/translations/${id}/tasks/${t.uuid}`)}
+                  >
+                    <td className="p-2">{t.uuid}</td>
+                    <td className="p-2">
+                      <TranslationTaskStatus status={t.status} />
+                    </td>
+                    <td className="p-2">{t.game}</td>
+                    <td className="p-2">
+                      {t.sourceLan}
+                      <br />
+                      {t.targetLan.join(', ')}
+                    </td>
+                    <td className="p-2">{t.applyMethod}</td>
+                    <td className="p-2">{t.createdAt}</td>
+                    <td className="p-2">{t.duration}s</td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>

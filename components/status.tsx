@@ -10,17 +10,22 @@ interface TranslationTaskStatusProps {
 
 export const TranslationTaskStatus: NextPage<TranslationTaskStatusProps> = ({ status }) => {
   return status === ETranslationTaskStatus.SUCCESS ? (
-    <div className="flex flex-row space-x-0.5 text-green-600">
+    <div className="flex flex-row space-x-0.5 text-green-700 items-center">
       <SvgSuccess />
       <span className="lowercase">{status}</span>
     </div>
   ) : status === ETranslationTaskStatus.FAILED ? (
-    <div className="flex flex-row space-x-0.5 text-red-500">
+    <div className="flex flex-row space-x-0.5 text-red-500 items-center">
       <SvgFailed />
       <span className="lowercase">{status}</span>
     </div>
+  ) : status === ETranslationTaskStatus.LOADING ? (
+    <div className="flex flex-row space-x-0.5 text-yellow-700 items-center">
+      <SvgAirplane />
+      <span className="lowercase">{status}</span>
+    </div>
   ) : (
-    <div className="flex flex-row space-x-0.5 text-yellow-600">
+    <div className="flex flex-row space-x-0.5 text-gray-700 items-center">
       <SvgAirplane />
       <span className="lowercase">{status}</span>
     </div>

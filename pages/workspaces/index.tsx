@@ -28,7 +28,7 @@ const Index: NextPage = () => {
           <h1>Workspaces</h1>
         </div>
       </div>
-      <div className="p-7 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-5 overflow-x-scroll">
+      <div className="p-7 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-5 overflow-x-auto">
         {sampleWorkspaces.map((w) => {
           return (
             <div

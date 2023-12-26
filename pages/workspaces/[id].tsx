@@ -22,7 +22,7 @@ const Workspace: NextPage = () => {
         router.replace(`/translations/${workspace?.id}`);
       }
     }
-  }, [id, router]);
+  }, [ctx?.actions, id, router]);
 
   return (
     <Layout>

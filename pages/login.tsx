@@ -23,7 +23,7 @@ const Login: NextPage = () => {
     <div className="flex flex-col items-center justify-center h-screen w-full">
       <div className="flex flex-col items-center space-y-7 max-w-sm w-full">
         <div className="">
-          <Image src={logo} width={110} height={110} className="rounded-2xl" />
+          <Image src={logo} width={110} height={110} className="rounded-2xl" alt="" />
         </div>
         <div className="flex flex-col items-center space-y-3 w-full">
           <h2 className="text-2xl font-medium">Log in to AI Studio</h2>

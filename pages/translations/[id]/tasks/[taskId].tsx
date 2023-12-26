@@ -40,8 +40,8 @@ const Task: NextPage = () => {
     return (
       <div
         className={cls(
-          tab === currentTab ? 'z-10 underline underline-offset-[13.5px] font-semibold' : '',
-          'cursor-pointer hover:text-pink-600',
+          tab === currentTab ? 'z-10 underline underline-offset-[11.5px] font-semibold' : '',
+          'cursor-pointer hover:text-pink-600 text-[11pt]',
         )}
         onClick={() => setTab(currentTab)}
       >
@@ -50,10 +50,33 @@ const Task: NextPage = () => {
     );
   };
 
+  const TaskHeader = ({ task }: { task: ITranslationTask }) => {
+    let color = 'text-gray-600';
+    if (task?.status === ETranslationTaskStatus.FAILED) {
+      color = 'text-red-500';
+    } else if (task?.status === ETranslationTaskStatus.SUCCESS) {
+      color = 'text-green-700';
+    } else if (task?.status === ETranslationTaskStatus.LOADING) {
+      color = 'text-yellow-700';
+    }
+    return (
+      <div className={cls(`px-7 pt-2 pb-3 flex flex-col`, color)}>
+        <div className="flex flex-row items-center space-x-2 text-2xl">
+          {task?.status === ETranslationTaskStatus.CANCELED && <SvgCanceled className="w-7 h-7" />}
+          {task?.status === ETranslationTaskStatus.FAILED && <SvgFailed className="w-7 h-7" />}
+          {task?.status === ETranslationTaskStatus.SUCCESS && <SvgSuccess className="w-7 h-7" />}
+          {task?.status === ETranslationTaskStatus.LOADING && <SvgAirplane className="w-7 h-7" />}
+          <h1>#{taskId}</h1>
+        </div>
+        <div className="lowercase">{task?.status}</div>
+      </div>
+    );
+  };
+
   return (
     <Layout>
-      <div className="flex flex-col space-y-3 border-b">
-        <div className="px-7 pt-3 flex flex-row justify-between items-center">
+      <div className="flex flex-col space-y-2">
+        <div className="px-7 pt-4 flex flex-row justify-between items-center">
           <Navigator
             paths={[
               { path: '/workspaces', text: 'Workspaces' },
@@ -74,44 +97,9 @@ const Task: NextPage = () => {
           />
           <div className="flex flex-row items-center space-x-2"></div>
         </div>
-        {task?.status === ETranslationTaskStatus.SUCCESS && (
-          <div className="px-7 pt-2 pb-3 flex flex-col text-green-700">
-            <div className="flex flex-row items-center space-x-2 text-2xl">
-              <SvgSuccess className="w-7 h-7" />
-              <h1>#{taskId}</h1>
-            </div>
-            <div className="lowercase">{task?.status}</div>
-          </div>
-        )}
-        {task?.status === ETranslationTaskStatus.FAILED && (
-          <div className="px-7 pt-2 pb-3 flex flex-col text-red-500">
-            <div className="flex flex-row items-center space-x-2 text-2xl">
-              <SvgFailed className="w-7 h-7" />
-              <h1>#{taskId}</h1>
-            </div>
-            <div className="lowercase">{task?.status}</div>
-          </div>
-        )}
-        {task?.status === ETranslationTaskStatus.LOADING && (
-          <div className="px-7 pt-2 pb-3 flex flex-col text-yellow-700">
-            <div className="flex flex-row items-center space-x-2 text-2xl">
-              <SvgAirplane className="w-7 h-7" />
-              <h1>#{taskId}</h1>
-            </div>
-            <div className="lowercase">{task?.status}</div>
-          </div>
-        )}
-        {task?.status === ETranslationTaskStatus.CANCELED && (
-          <div className="px-7 pt-2 pb-3 flex flex-col text-gray-700">
-            <div className="flex flex-row items-center space-x-2 text-2xl">
-              <SvgCanceled className="w-7 h-7" />
-              <h1>#{taskId}</h1>
-            </div>
-            <div className="lowercase">{task?.status}</div>
-          </div>
-        )}
+        <TaskHeader task={task!} />
       </div>
-      <div className="p-7 space-y-2 overflow-x-scroll">
+      <div className="px-7 py-5 space-y-1.5 overflow-x-scroll">
         <div className="max-w-lg flex flex-row space-x-5 items-center tracking-tight whitespace-nowrap">
           <TabItem currentTab="overview" title="Overview" />
           <TabItem currentTab="log" title="Log" />
@@ -180,7 +168,7 @@ const Task: NextPage = () => {
                     </div>
                   ))}
                 </div>
-                <div className="text-sm">Duration: 12s</div>
+                <div className="text-xs">Duration: 12s</div>
               </div>
             </div>
           </div>
@@ -235,7 +223,7 @@ const Task: NextPage = () => {
                     </div>
                   ))}
                 </div>
-                <div className="text-gray-600 text-sm pt-5 whitespace-nowrap overflow-x-auto">
+                <div className="text-gray-600 text-xs pt-5 pb-5 whitespace-nowrap overflow-x-auto">
                   <div className="">17:20:09 Finalize build settings</div>
                   <div className="">
                     17:20:09 Lorem Ipsum is simply dummy text of the printing and typesetting
@@ -288,7 +276,7 @@ const Task: NextPage = () => {
                   </div>
                   {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((v, i) => {
                     return (
-                      <div key={i} className="flex flex-row items-center py-0.5">
+                      <div key={i} className="flex flex-row items-center py-1">
                         <div className="w-1/2">param{v}</div>
                         <div className="w-1/2">fofapfewofpafepawfeoa</div>
                       </div>

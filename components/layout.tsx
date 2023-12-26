@@ -12,6 +12,7 @@ import { cls } from '@libs/client/utils';
 import SvgLanguage from '@components/svgs/svg-language';
 import SvgSpeak from '@components/svgs/svg-speak';
 import { ETemplateType, sampleWorkspaces } from '../pages/api/sample';
+import SvgDownload from '@components/svgs/svg-download';
 
 interface LayoutProps {
   hasLeftMenu?: boolean;
@@ -23,7 +24,7 @@ const Layout = ({ hasLeftMenu, children }: LayoutProps) => {
   const router = useRouter();
   return (
     <div className="h-screen w-full">
-      <div className="bg-black h-20 flex flex-row justify-between">
+      <div className="bg-black h-[70px] flex flex-row justify-between">
         <div className="flex h-full flex-row items-center px-5 space-x-6">
           <Image
             src={logo}
@@ -31,6 +32,7 @@ const Layout = ({ hasLeftMenu, children }: LayoutProps) => {
             width={45}
             height={45}
             alt="Home"
+            layout="fixed"
           />
           <div className="text-gray-200 flex flex-row items-center space-x-1">
             <span
@@ -40,14 +42,20 @@ const Layout = ({ hasLeftMenu, children }: LayoutProps) => {
               Workspaces
             </span>
             <div onClick={() => router.push('/workspaces/create')}>
-              <SvgPlus className="w-5 h-5 text-yellow-600 hover:text-pink-600 cursor-pointer" />
+              <SvgPlus className="w-5 h-5 text-yellow-500 hover:text-pink-600 cursor-pointer" />
             </div>
           </div>
         </div>
-        <div className="flex flex-row h-full items-center space-x-3 text-gray-400 px-5">
-          <div>Theme: Light</div>
-          <div>Administration</div>
-          <div>
+        <div className="flex flex-row h-full items-center space-x-3 text-gray-400 px-5 text-sm">
+          <div className="hidden sm:flex flex-row items-center space-x-2">
+            <div>
+              <span>Theme:</span>
+              <select className="py-1 bg-black border-0 text-sm">
+                <option>Light</option>
+                <option>Dark</option>
+              </select>
+            </div>
+            <div>Administration</div>
             <SvgQuestion className="w-6 h-6" />
           </div>
           <div>
@@ -85,10 +93,20 @@ const Layout = ({ hasLeftMenu, children }: LayoutProps) => {
               <input type="text" className="w-44 rounded h-7 p-1 pl-7" />
             </div>
             <div className="flex flex-col space-y-1 w-full">
-              <div className="tracking-wider text-sm px-5">FAVORITES</div>
-              <div className="flex flex-row space-x-1 h-7 px-5 items-center hover:bg-blue-200 w-full cursor-pointer">
-                <SvgStarSolid />
-                <span onClick={() => router.push('/workspaces')}>Workspaces</span>
+              <div className="tracking-widest text-sm px-5">FAVORITES</div>
+              <div className="flex flex-col text-[11pt]">
+                <div className="flex flex-row space-x-1 h-7 px-5 items-center hover:bg-blue-200 w-full cursor-pointer">
+                  <SvgStarSolid />
+                  <span onClick={() => router.push('/workspaces')}>Workspaces</span>
+                </div>
+                <div className="flex flex-row space-x-1 h-7 px-5 items-center hover:bg-blue-200 w-full cursor-pointer">
+                  <SvgStarSolid />
+                  <span onClick={() => router.push('/Voices')}>Voices</span>
+                </div>
+                <div className="flex flex-row space-x-1 h-7 px-5 items-center hover:bg-blue-200 w-full cursor-pointer">
+                  <SvgStarSolid />
+                  <span onClick={() => router.push('/Translations')}>Translations</span>
+                </div>
               </div>
             </div>
             <div className="flex flex-col w-full">
@@ -99,10 +117,10 @@ const Layout = ({ hasLeftMenu, children }: LayoutProps) => {
                 >
                   {collapseWorkspaces ? <SvgDirectionDown /> : <SvgDirectionRight />}
                 </div>
-                <div className="tracking-wider text-sm">WORKSPACES</div>
+                <div className="tracking-widest text-sm">WORKSPACES</div>
               </div>
               {collapseWorkspaces ? (
-                <div>
+                <div className="text-sm">
                   {sampleWorkspaces.map((w) => (
                     <div
                       key={w.id}
@@ -113,7 +131,7 @@ const Layout = ({ hasLeftMenu, children }: LayoutProps) => {
                       ) : (
                         <SvgLanguage className="w-5 h-5 text-blue-500" />
                       )}
-                      <span onClick={() => router.push(`/workspaces/${w.id}`)}>{w.name}</span>
+                      <span onClick={() => router.push(`/workspaces/5`)}>{w.name}</span>
                     </div>
                   ))}
                 </div>

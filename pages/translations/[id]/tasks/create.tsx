@@ -7,6 +7,7 @@ import { cls } from '@libs/client/utils';
 import Navigator from '@components/navigator';
 import { ETemplateType } from '../../../api/sample';
 import { RootContext } from '../../../../context/root-context';
+import SvgX from '@components/svgs/svg-x';
 
 type StepProcess = 'fileUpload' | 'models' | 'language' | 'applyGlossary';
 const Create: NextPage = () => {
@@ -15,10 +16,43 @@ const Create: NextPage = () => {
   const workspace = ctx?.workspace;
   const { id } = router.query;
   const [step, setStep] = useState<StepProcess>('fileUpload');
+  const [selectedTargetLanguages, setSelectedTargetLanguages] = useState<string[]>([]);
+  const targetLanguages = ['Spanish', 'French', 'German', 'Italian'];
+  const [selectedLanguage, setSelectedLanguage] = useState<string>('Spanish');
+
+  const TargetLanguageBadge = ({ language }: { language: string }) => {
+    return (
+      <div className="flex flex-row space-x-0.5 items-center px-1 py-0.5 bg-blue-500 w-fit rounded text-white">
+        <span>{language}</span>
+        <span
+          className="cursor-pointer hover:text-red-200"
+          onClick={() => {
+            setSelectedTargetLanguages((prev) => [...prev.filter((p) => p !== language)]);
+          }}
+        >
+          <SvgX className="w-3 h-3" />
+        </span>
+      </div>
+    );
+  };
+
+  const onClickAddTargetLanguage = () => {
+    if (selectedLanguage) {
+      if (!selectedTargetLanguages.find((language) => language === selectedLanguage)) {
+        setSelectedTargetLanguages((prev) => [...prev, selectedLanguage]);
+      }
+    }
+  };
+
+  const onSelectTargetLanguage = (e: any) => {
+    e.preventDefault();
+    setSelectedLanguage(e.target.value);
+  };
+
   return (
     <Layout>
-      <div className="flex flex-col space-y-3 border-b">
-        <div className="px-7 pt-3 flex flex-row justify-between items-center">
+      <div className="flex flex-col space-y-2 border-b">
+        <div className="px-7 pt-4 flex flex-row justify-between items-center">
           <Navigator
             paths={[
               { path: '/workspaces', text: 'Workspaces' },
@@ -30,11 +64,7 @@ const Create: NextPage = () => {
               { path: `/translations/${id}/tasks/create`, text: 'Translation' },
             ]}
           />
-          <div className="flex flex-row items-center space-x-2">
-            <div className="py-0.5 px-3 text-sm rounded border cursor-pointer hover:border-blue-500">
-              Action
-            </div>
-          </div>
+          <div className="flex flex-row items-center space-x-2 h-[26px]"></div>
         </div>
         <div className="px-7 pt-2 pb-3 flex flex-row items-center space-x-2 text-2xl">
           <SvgPlay className="rounded-full bg-blue-500 w-6 h-6 text-white" />
@@ -43,7 +73,7 @@ const Create: NextPage = () => {
       </div>
       <div className="flex flex-row h-full">
         <div className="w-1/4 bg-gray-100 h-full border-r">
-          <div className="flex flex-col text-blue-900 whitespace-nowrap overflow-x-hidden">
+          <div className="flex flex-col text-blue-900 whitespace-nowrap overflow-x-hidden text-[11pt]">
             <div className="">&nbsp;</div>
             <div
               className={cls(
@@ -85,14 +115,23 @@ const Create: NextPage = () => {
         </div>
         <div className="w-3/4">
           {step === 'fileUpload' && (
-            <div className="p-7 flex flex-col space-y-3 max-w-2xl">
+            <div className="p-7 flex flex-col space-y-5 max-w-2xl">
               <div>
+                <div className="pb-5">
+                  <h2 className="text-lg font-semibold">File upload requirements</h2>
+                  <span className="text-gray-400 text-xs">
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
+                    Ipsum has been the industry standard dummy text ever since the 1500s, when an
+                    unknown printer took a galley of type and scrambled it to make a type specimen
+                    book.
+                  </span>
+                </div>
                 <div className="flex flex-row items-center">
                   <div className="w-1/3 font-semibold">
                     Source File: <span className="text-red-500">*</span>
                   </div>
                   <div className="w-2/3">
-                    <label className="w-full cursor-pointer text-gray-500 hover:border-yellow-500 hover:text-yellow-500 flex items-center justify-center border-2 border-dashed border-gray-300 h-48 rounded-md">
+                    <label className="w-full cursor-pointer text-gray-500 hover:border-yellow-500 hover:text-yellow-500 flex items-center justify-center border border-dashed border-gray-300 h-48 rounded-md">
                       <svg
                         className="h-12 w-12"
                         stroke="currentColor"
@@ -115,7 +154,7 @@ const Create: NextPage = () => {
               <hr />
               <div>
                 <button
-                  className="border rounded py-1 px-5 border-gray-400 hover:border-blue-500"
+                  className="border rounded py-1 px-5 border-gray-400 hover:border-blue-500 text-sm"
                   onClick={() => setStep('models')}
                 >
                   Next
@@ -124,19 +163,26 @@ const Create: NextPage = () => {
             </div>
           )}
           {step === 'models' && (
-            <div className="p-7 flex flex-col space-y-3 max-w-2xl">
+            <div className="p-7 flex flex-col space-y-5 max-w-2xl">
               <div>
                 <div className="flex flex-row items-center">
                   <div className="w-1/3 font-semibold">
-                    Source File: <span className="text-red-500">*</span>
+                    Translation Model for Game: <span className="text-red-500">*</span>
                   </div>
-                  <div className="w-2/3">X</div>
+                  <div className="w-2/3">
+                    <select className="rounded h-10 text-sm w-full">
+                      <option>The King of Fighters</option>
+                      <option>Seven Nights 2</option>
+                      <option>A3</option>
+                      <option>Hype Squared</option>
+                    </select>
+                  </div>
                 </div>
               </div>
               <hr />
               <div>
                 <button
-                  className="border rounded py-1 px-5 border-gray-400 hover:border-blue-500"
+                  className="border rounded py-1 px-5 border-gray-400 hover:border-blue-500 text-sm"
                   onClick={() => setStep('language')}
                 >
                   Next
@@ -145,19 +191,58 @@ const Create: NextPage = () => {
             </div>
           )}
           {step === 'language' && (
-            <div className="p-7 flex flex-col space-y-3 max-w-2xl">
-              <div>
-                <div className="flex flex-row items-center">
+            <div className="p-7 flex flex-col space-y-5 max-w-2xl">
+              <div className="divide-y">
+                <div className="flex flex-row items-center px-1 py-2">
                   <div className="w-1/3 font-semibold">
-                    Source File: <span className="text-red-500">*</span>
+                    Source Language: <span className="text-red-500">*</span>
                   </div>
-                  <div className="w-2/3">X</div>
+                  <div className="w-2/3">
+                    <select className="rounded h-10 text-sm w-full">
+                      <option>English</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="flex flex-row items-center px-1 py-2">
+                  <div className="w-1/3 font-semibold">
+                    Target Languages: <span className="text-red-500">*</span>
+                  </div>
+                  <div className="w-2/3">
+                    <div className="flex flex-row items-center">
+                      <select
+                        className="rounded-l h-10 text-sm w-full"
+                        onChange={onSelectTargetLanguage}
+                      >
+                        {targetLanguages.map((language, i) => (
+                          <option key={i} value={language}>
+                            {language}
+                          </option>
+                        ))}
+                      </select>
+                      <div
+                        className="border-r border-t border-b border-gray-500 h-10 text-sm pt-2 rounded-r w-14 text-center cursor-pointer bg-gray-200 hover:border-blue-500 hover:bg-gray-300"
+                        onClick={onClickAddTargetLanguage}
+                      >
+                        Add
+                      </div>
+                    </div>
+                    <div
+                      className={cls(
+                        `py-2 text-xs flex flex-row space-x-2`,
+                        !selectedTargetLanguages.length ? 'hidden' : '',
+                      )}
+                    >
+                      {selectedTargetLanguages.map((language, i) => {
+                        return <TargetLanguageBadge language={language} key={i} />;
+                      })}
+                    </div>
+                  </div>
                 </div>
               </div>
               <hr />
               <div>
                 <button
-                  className="border rounded py-1 px-5 border-gray-400 hover:border-blue-500"
+                  className="border rounded py-1 px-5 border-gray-400 hover:border-blue-500 text-sm"
                   onClick={() => setStep('applyGlossary')}
                 >
                   Next
@@ -166,18 +251,29 @@ const Create: NextPage = () => {
             </div>
           )}
           {step === 'applyGlossary' && (
-            <div className="p-7 flex flex-col space-y-3 max-w-2xl">
+            <div className="p-7 flex flex-col space-y-5 max-w-2xl">
               <div>
                 <div className="flex flex-row items-center">
                   <div className="w-1/3 font-semibold">
-                    Source File: <span className="text-red-500">*</span>
+                    Method of apply glossaries: <span className="text-red-500">*</span>
                   </div>
-                  <div className="w-2/3">X</div>
+                  <div className="w-2/3">
+                    <select className="rounded h-10 text-sm w-full">
+                      <option>Magellan</option>
+                      <option>Google</option>
+                      <option>No Apply</option>
+                    </select>
+                  </div>
                 </div>
               </div>
               <hr />
               <div>
-                <button className="border rounded py-1 px-5 bg-blue-500 text-white hover:bg-blue-600">
+                <button
+                  className="border rounded py-1 px-5 bg-blue-500 text-white hover:bg-blue-600 text-sm"
+                  onClick={() =>
+                    router.push('/translations/3/tasks/97ee3e4404b8f5883349a1d26bacd3d0')
+                  }
+                >
                   Run
                 </button>
               </div>

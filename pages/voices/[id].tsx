@@ -47,8 +47,8 @@ const Voice: NextPage = () => {
 
   return (
     <Layout>
-      <div className="flex flex-col space-y-3 border-b">
-        <div className="px-7 pt-3 flex flex-row justify-between items-center">
+      <div className="flex flex-col space-y-2 border-b">
+        <div className="px-7 pt-4 flex flex-row justify-between items-center">
           <Navigator paths={[]} />
           <div className="flex flex-row items-center space-x-2"></div>
         </div>

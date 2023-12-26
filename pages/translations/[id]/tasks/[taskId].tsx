@@ -99,7 +99,7 @@ const Task: NextPage = () => {
         </div>
         <TaskHeader task={task!} />
       </div>
-      <div className="px-7 py-5 space-y-1.5 overflow-x-scroll">
+      <div className="px-7 py-5 space-y-1.5 overflow-x-auto">
         <div className="max-w-lg flex flex-row space-x-5 items-center tracking-tight whitespace-nowrap">
           <TabItem currentTab="overview" title="Overview" />
           <TabItem currentTab="log" title="Log" />

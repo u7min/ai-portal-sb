@@ -50,7 +50,7 @@ const Layout = ({ hasLeftMenu, children }: LayoutProps) => {
           <div className="hidden sm:flex flex-row items-center space-x-2">
             <div>
               <span>Theme:</span>
-              <select className="py-1 bg-black border-0 text-sm">
+              <select className="py-1 bg-black border-0 text-sm focus:ring-0">
                 <option>Light</option>
                 <option>Dark</option>
               </select>

@@ -188,9 +188,20 @@ const Index: NextPage = () => {
                     <td className="p-3">{t.duration}s</td>
                   </tr>
                 ))}
+              {!sampleTranslationTasks.filter((t) => t.status === status || status === 'ALL')
+                .length && (
+                <tr className="border-b border-gray-200 h-16 align-top text-gray-500">
+                  <td className="p-3 text-center align-middle" colSpan={7}>
+                    Tasks Not found
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
-          <div className="text-gray-400 text-sm">{sampleTranslationTasks.length} tasks found</div>
+          <div className="text-gray-400 text-sm">
+            {sampleTranslationTasks.filter((t) => t.status === status || status === 'ALL').length}{' '}
+            tasks found
+          </div>
         </div>
       </div>
     </Layout>

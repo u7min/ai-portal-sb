@@ -66,7 +66,7 @@ const Index: NextPage = () => {
           <h1>{workspace?.name}</h1>
         </div>
       </div>
-      <div className="p-7 divide-y space-y-2 divide-gray-300 overflow-x-scroll">
+      <div className="p-7 divide-y space-y-2 divide-gray-300 overflow-x-auto">
         <div className="flex flex-row space-x-5 items-center tracking-tight whitespace-nowrap">
           <TabItem currentTab="tasks" title="Tasks" />
         </div>

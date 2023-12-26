@@ -33,7 +33,7 @@ const Index: NextPage = () => {
           return (
             <div
               key={w.id}
-              className={cls('border hover:bg-gray-200 cursor-pointer border-gray-300')}
+              className={cls('border hover:bg-gray-200 cursor-pointer border-gray-300 rounded')}
               onClick={() => router.push(`/workspaces/5`)}
             >
               <div className="p-4 flex flex-col space-y-0.5">

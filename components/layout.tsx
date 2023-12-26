@@ -33,6 +33,7 @@ const Layout = ({ hasLeftMenu, children }: LayoutProps) => {
             height={45}
             alt="Home"
             layout="fixed"
+            onClick={() => router.push('/')}
           />
           <div className="text-gray-200 flex flex-row items-center space-x-1">
             <span
@@ -94,18 +95,22 @@ const Layout = ({ hasLeftMenu, children }: LayoutProps) => {
             </div>
             <div className="flex flex-col space-y-1 w-full">
               <div className="tracking-widest text-sm px-5">FAVORITES</div>
-              <div className="flex flex-col text-[11pt]">
+              <div className="flex flex-col text-[10.5pt]">
                 <div className="flex flex-row space-x-1 h-7 px-5 items-center hover:bg-blue-200 w-full cursor-pointer">
-                  <SvgStarSolid />
-                  <span onClick={() => router.push('/workspaces')}>Workspaces</span>
+                  <SvgStarSolid className="w-4 h-4" />
+                  <span onClick={() => router.push('/workspaces?favourite=true')}>Workspaces</span>
                 </div>
                 <div className="flex flex-row space-x-1 h-7 px-5 items-center hover:bg-blue-200 w-full cursor-pointer">
-                  <SvgStarSolid />
-                  <span onClick={() => router.push('/Voices')}>Voices</span>
+                  <SvgStarSolid className="w-4 h-4" />
+                  <span onClick={() => router.push('/workspaces?favourite=true&type=voice')}>
+                    Voices
+                  </span>
                 </div>
                 <div className="flex flex-row space-x-1 h-7 px-5 items-center hover:bg-blue-200 w-full cursor-pointer">
-                  <SvgStarSolid />
-                  <span onClick={() => router.push('/Translations')}>Translations</span>
+                  <SvgStarSolid className="w-4 h-4" />
+                  <span onClick={() => router.push('/workspaces?favourite=true&type=translation')}>
+                    Translations
+                  </span>
                 </div>
               </div>
             </div>
